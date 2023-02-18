@@ -1,6 +1,7 @@
 package com.telestapp.rateexchange.fragments.rates.models
 
 data class RateViewState(
+    val enterText: String = "",
     val currency: String = "",
     val list: List<RateInfo> = emptyList()
 )

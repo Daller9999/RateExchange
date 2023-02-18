@@ -1,30 +1,26 @@
 package com.telestapp.rateexchange.di
 
 import com.telestapp.rateexchange.database.DataBase
+import com.telestapp.rateexchange.database.repository.CurrencyRepository
 import com.telestapp.rateexchange.database.repository.RatesRepository
-import com.telestapp.rateexchange.database.room.ExchangeDao
+import com.telestapp.rateexchange.database.room.exchanges.ExchangeDao
 import com.telestapp.rateexchange.fragments.rates.RatesViewModel
 import com.telestapp.rateexchange.network.RatesApi
-import com.telestapp.rateexchange.preferences.RatesPreferences
 import com.telestapp.rateexchange.usecase.RatesUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import kotlin.math.sin
-
-val preferences = module {
-    single { RatesPreferences(get()) }
-}
 
 val database = module {
     single { DataBase.buildDataBase(get()) }
 
-    fun provideDao(dbMain: DataBase): ExchangeDao {
-        return dbMain.getMovieDao()
-    }
+    fun provideExchangeDao(dbMain: DataBase) = dbMain.getExchangeDao()
+    fun provideCurrencyDao(dbMain: DataBase) = dbMain.getCurrencyDao()
 
-    single { provideDao(get()) }
+    single { provideExchangeDao(get()) }
+    single { provideCurrencyDao(get()) }
 
     single { RatesRepository(get()) }
+    single { CurrencyRepository(get()) }
 }
 
 val network = module {
@@ -40,4 +36,4 @@ val useCase = module {
     factory { RatesUseCase(get(), get(), get()) }
 }
 
-val modulesList = preferences + database + network + viewModels + useCase
+val modulesList = database + network + viewModels + useCase

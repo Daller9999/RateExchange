@@ -1,4 +1,4 @@
-package com.telestapp.rateexchange.database.room
+package com.telestapp.rateexchange.database.room.exchanges
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

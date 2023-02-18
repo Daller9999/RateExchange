@@ -1,4 +1,4 @@
-package com.telestapp.rateexchange.database.room
+package com.telestapp.rateexchange.database.room.exchanges
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -11,7 +11,7 @@ interface ExchangeDao {
     fun addExchange(exchange: ExchangeEntity)
 
     @Query("select * from ExchangeTable where currency = :currency")
-    fun getCurrencyByName(currency: String): ExchangeEntity
+    fun getCurrencyByName(currency: String): ExchangeEntity?
 
 
 }
