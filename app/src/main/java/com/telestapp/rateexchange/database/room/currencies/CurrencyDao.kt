@@ -13,4 +13,7 @@ interface CurrencyDao {
     @Insert
     fun insetCurrency(currency: CurrencyEntity)
 
+    @Query("delete from CurrencyTable")
+    fun clearTable()
+
 }

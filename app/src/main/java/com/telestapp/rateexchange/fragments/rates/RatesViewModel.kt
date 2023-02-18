@@ -95,7 +95,7 @@ class RatesViewModel(
         val rate = ratesListInfo.exchanges.firstOrNull {
             it.currency == currency.shortName
         } ?: return@launch
-        if (currency.shortName != DEFAULT_CURRENCY) {
+        calculateRates = if (currency.shortName != DEFAULT_CURRENCY) {
             ratesListInfo.exchanges.forEach { item ->
                 arrayList.add(
                     ExchangeRate(
@@ -104,9 +104,9 @@ class RatesViewModel(
                     )
                 )
             }
-            calculateRates = calculateRates.copy(exchanges = arrayList)
+            calculateRates.copy(exchanges = arrayList)
         } else {
-            calculateRates = calculateRates.copy(exchanges = ratesListInfo.exchanges)
+            calculateRates.copy(exchanges = ratesListInfo.exchanges)
         }
         calculateCurrency(1.0)
     }

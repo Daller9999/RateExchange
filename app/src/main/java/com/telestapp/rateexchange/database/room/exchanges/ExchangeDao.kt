@@ -13,5 +13,8 @@ interface ExchangeDao {
     @Query("select * from ExchangeTable where currency = :currency")
     fun getCurrencyByName(currency: String): ExchangeEntity?
 
+    @Query("delete from ExchangeTable")
+    fun clearTable()
+
 
 }

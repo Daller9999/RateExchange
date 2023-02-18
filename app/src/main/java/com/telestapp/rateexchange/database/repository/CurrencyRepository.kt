@@ -12,6 +12,8 @@ class CurrencyRepository(
 
     private val dispatcher = Dispatchers.IO
 
+    fun clearTable() = currencyDao.clearTable()
+
     suspend fun insertCurrency(currency: CurrencyInfo) = withContext(dispatcher) {
         currencyDao.insetCurrency(
             CurrencyEntity(

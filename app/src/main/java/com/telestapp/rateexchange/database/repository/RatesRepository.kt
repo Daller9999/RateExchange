@@ -20,6 +20,8 @@ class RatesRepository(
         private val typedValue = object : TypeToken<List<ExchangeRate>>() {}.type
     }
 
+    fun clearTable() = exchangeDao.clearTable()
+
     suspend fun insertRate(rate: RatesListInfo) = withContext(dispatcher) {
         exchangeDao.addExchange(rate.toRatesEntity())
     }

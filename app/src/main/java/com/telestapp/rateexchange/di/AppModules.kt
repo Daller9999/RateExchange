@@ -6,6 +6,7 @@ import com.telestapp.rateexchange.database.repository.RatesRepository
 import com.telestapp.rateexchange.database.room.exchanges.ExchangeDao
 import com.telestapp.rateexchange.fragments.rates.RatesViewModel
 import com.telestapp.rateexchange.network.RatesApi
+import com.telestapp.rateexchange.preference.Preference
 import com.telestapp.rateexchange.usecase.RatesUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -33,7 +34,11 @@ val viewModels = module {
 }
 
 val useCase = module {
-    factory { RatesUseCase(get(), get(), get()) }
+    factory { RatesUseCase(get(), get(), get(), get()) }
 }
 
-val modulesList = database + network + viewModels + useCase
+val preference = module {
+    single { Preference(get()) }
+}
+
+val modulesList = database + network + viewModels + useCase + preference

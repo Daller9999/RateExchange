@@ -44,17 +44,19 @@ class RatesApi {
 
     suspend fun getCurrencyList(): List<CurrencyInfo> {
         val url = "$BASE_URL/currencies.json"
-        val result: String = client.request(url) {
+        val result: Map<String, String> = client.request(url) {
             parameter("app_id", BuildConfig.RATE_API_KEY)
         }
         return try {
-            val resultJson: Map<String, String> = gson.fromJson(result, jsonListType)
-            return resultJson.keys.toList().map {
-                CurrencyInfo(
-                    shortName = it,
-                    longName = resultJson[it] ?: ""
-                )
-            }
+//            val resultJson: Map<String, String> = gson.fromJson(result, jsonListType)
+//            return resultJson.keys.toList().map {
+//                CurrencyInfo(
+//                    shortName = it,
+//                    longName = resultJson[it] ?: ""
+//                )
+//            }
+            println(result)
+            emptyList()
         } catch (ex: Exception) {
             emptyList()
         }
