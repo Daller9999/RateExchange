@@ -25,9 +25,19 @@ android {
         buildConfigField "String", "RATE_API_KEY", apikeyProperties['RATE_API_KEY']
     }
 
+    signingConfigs{
+        debug {
+            keyAlias 'key0'
+            keyPassword 'password'
+            storeFile file('testkey.jks')
+            storePassword 'password'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
