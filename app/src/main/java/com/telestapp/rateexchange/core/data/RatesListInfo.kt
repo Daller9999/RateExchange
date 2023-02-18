@@ -7,5 +7,5 @@ data class RatesListInfo(
 
 data class ExchangeRate(
     val currency: String,
-    val rate: Float
+    val rate: Double
 )

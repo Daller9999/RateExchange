@@ -4,12 +4,12 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,12 +22,17 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.telestapp.rateexchange.R
+import com.telestapp.rateexchange.core.data.CurrencyInfo
 import com.telestapp.rateexchange.fragments.rates.RatesViewModel
+import com.telestapp.rateexchange.fragments.rates.data.ExchangeInfo
 import com.telestapp.rateexchange.fragments.rates.models.RateViewState
 import com.telestapp.rateexchange.fragments.rates.models.RatesEvent
 
@@ -40,6 +45,18 @@ fun RatesScreen(
         state = state.value,
         onTextChanged = {
             viewModel.obtainEvent(RatesEvent.OnEnterText(it))
+        },
+        onSelectClick = {
+            viewModel.obtainEvent(RatesEvent.OnSelectClick)
+        }
+    )
+    SelectDialog(
+        state = state.value,
+        onDismissDialog = {
+            viewModel.obtainEvent(RatesEvent.OnSelectDismiss)
+        },
+        onSelectCurrency = {
+            viewModel.obtainEvent(RatesEvent.OnSelectCurrency(it))
         }
     )
 
@@ -49,24 +66,129 @@ fun RatesScreen(
 
 }
 
+
+@Composable
+private fun SelectDialog(
+    state: RateViewState,
+    onDismissDialog: () -> Unit,
+    onSelectCurrency: (CurrencyInfo) -> Unit
+) {
+    if (!state.isVisibleSelectDialog) return
+
+    Dialog(onDismissRequest = onDismissDialog) {
+        Card(
+            modifier = Modifier.fillMaxSize().padding(vertical = 30.dp),
+            shape = RoundedCornerShape(size = 10.dp),
+            elevation = 10.dp,
+            border = BorderStroke(
+                width = 1.dp,
+                color = colorResource(id = R.color.blue)
+            )
+        ) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(state.currencies) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .clickable {
+                                onSelectCurrency.invoke(it)
+                            }
+                    ) {
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                        ) {
+                            Text(
+                                text = it.shortName,
+                                fontSize = 20.sp,
+                                color = colorResource(id = R.color.blue)
+                            )
+                            Spacer(modifier = Modifier.weight(1f).defaultMinSize(minWidth = 10.dp))
+                            Text(
+                                text = it.longName,
+                                fontSize = 16.sp,
+                                color = colorResource(id = R.color.black),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Divider(
+                            modifier = Modifier.fillMaxWidth(),
+                            color = colorResource(id = R.color.blue)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Composable
 private fun RateView(
     state: RateViewState,
-    onTextChanged: (String) -> Unit
+    onTextChanged: (String) -> Unit,
+    onSelectClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 20.dp)
     ) {
-        Row(modifier = Modifier.clickable {
-
-        }) {
-            Text(text = stringResource(id = R.string.selected_currency))
+        Row(modifier = Modifier
+            .clickable { onSelectClick.invoke() }
+            .padding(horizontal = 10.dp)
+            .height(50.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.padding(start = 10.dp),
+                text = stringResource(id = R.string.selected_currency),
+                fontSize = 18.sp,
+                color = colorResource(id = R.color.black)
+            )
             Spacer(modifier = Modifier.width(10.dp))
-            Text(text = state.currency)
+            Text(
+                text = state.selectedCurrency.shortName,
+                fontSize = 20.sp,
+                color = colorResource(id = R.color.blue)
+            )
         }
         EnterField(
             state = state,
             onTextChanged = onTextChanged
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            items(state.rates) {
+                CurrencyRate(currency = state.selectedCurrency.shortName, rate = it)
+            }
+        }
+    }
+}
+
+@Composable
+private fun CurrencyRate(currency: String, rate: ExchangeInfo) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = "$currency ${stringResource(id = R.string.to)} ${rate.currency} = ${rate.exchangedRate}",
+            color = colorResource(id = R.color.blue),
+            fontSize = 20.sp
+        )
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(
+            text = "${stringResource(id = R.string.rate_exchange)} = ${rate.rate}",
+            fontSize = 16.sp
+        )
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 2.dp), color = colorResource(id = R.color.black)
         )
     }
 }
@@ -98,6 +220,7 @@ private fun EnterField(
         ) {
             BasicTextField(
                 value = state.enterText,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = {
                     onTextChanged(it)
                 },

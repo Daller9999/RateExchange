@@ -74,7 +74,7 @@ class RatesApi {
                 arrayList.add(
                     ExchangeRate(
                         currency = key,
-                        rate = resultJson.rates[key] ?: 0f
+                        rate = resultJson.rates[key] ?: 0.0
                     )
                 )
             }

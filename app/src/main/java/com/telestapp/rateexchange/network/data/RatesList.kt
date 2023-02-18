@@ -11,5 +11,5 @@ data class RatesTypedToken(
     @SerialName("base")
     val base: String,
     @SerialName("rates")
-    val rates: Map<String, Float>
+    val rates: Map<String, Double>
 )
