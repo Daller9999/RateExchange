@@ -9,7 +9,6 @@ import com.telestapp.rateexchange.database.room.currencies.CurrencyEntity
 import com.telestapp.rateexchange.database.room.exchanges.ExchangeDao
 import com.telestapp.rateexchange.database.room.exchanges.ExchangeEntity
 
-//@TypeConverters(TypeConverter::class)
 @Database(entities = [ExchangeEntity::class, CurrencyEntity::class], version = 1)
 abstract class DataBase : RoomDatabase() {
     companion object {

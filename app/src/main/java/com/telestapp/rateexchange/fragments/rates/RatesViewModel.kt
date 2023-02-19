@@ -18,7 +18,6 @@ class RatesViewModel(
 
     companion object {
         private const val DEFAULT_CURRENCY = "USD"
-        private const val ROUND_SCALE = 10
     }
 
     private var ratesListInfo = RatesListInfo()

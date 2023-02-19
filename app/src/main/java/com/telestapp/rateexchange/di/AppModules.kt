@@ -27,7 +27,6 @@ val network = module {
     single { RatesApi() }
 }
 
-
 val viewModels = module {
     viewModel { RatesViewModel(get()) }
 }
