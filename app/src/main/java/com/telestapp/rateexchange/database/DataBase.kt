@@ -1,7 +1,9 @@
 package com.telestapp.rateexchange.database
 
 import android.app.Application
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.telestapp.rateexchange.database.room.currencies.CurrencyDao
 import com.telestapp.rateexchange.database.room.currencies.CurrencyEntity
 import com.telestapp.rateexchange.database.room.exchanges.ExchangeDao

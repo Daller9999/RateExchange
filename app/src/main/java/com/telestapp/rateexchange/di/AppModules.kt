@@ -3,7 +3,6 @@ package com.telestapp.rateexchange.di
 import com.telestapp.rateexchange.database.DataBase
 import com.telestapp.rateexchange.database.repository.CurrencyRepository
 import com.telestapp.rateexchange.database.repository.RatesRepository
-import com.telestapp.rateexchange.database.room.exchanges.ExchangeDao
 import com.telestapp.rateexchange.fragments.rates.RatesViewModel
 import com.telestapp.rateexchange.network.RatesApi
 import com.telestapp.rateexchange.preference.Preference

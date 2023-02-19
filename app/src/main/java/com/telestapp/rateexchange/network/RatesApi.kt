@@ -1,13 +1,10 @@
 package com.telestapp.rateexchange.network
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.telestapp.rateexchange.BuildConfig
 import com.telestapp.rateexchange.core.data.CurrencyInfo
 import com.telestapp.rateexchange.core.data.ExchangeRate
 import com.telestapp.rateexchange.core.data.RatesListInfo
 import com.telestapp.rateexchange.network.data.RatesTypedToken
-import com.telestapp.rateexchange.network.data.ratesTypedValue
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
@@ -19,8 +16,6 @@ class RatesApi {
 
     companion object {
         private const val BASE_URL = "https://openexchangerates.org/api"
-        private val gson = Gson()
-        private val jsonListType = object : TypeToken<Map<String, String>>() {}.type
     }
 
     private val client = HttpClient {
@@ -48,15 +43,12 @@ class RatesApi {
             parameter("app_id", BuildConfig.RATE_API_KEY)
         }
         return try {
-//            val resultJson: Map<String, String> = gson.fromJson(result, jsonListType)
-//            return resultJson.keys.toList().map {
-//                CurrencyInfo(
-//                    shortName = it,
-//                    longName = resultJson[it] ?: ""
-//                )
-//            }
-            println(result)
-            emptyList()
+            return result.keys.toList().map {
+                CurrencyInfo(
+                    shortName = it,
+                    longName = result[it] ?: ""
+                )
+            }
         } catch (ex: Exception) {
             emptyList()
         }
@@ -64,24 +56,23 @@ class RatesApi {
 
     suspend fun getExchangeRatesList(currency: String): RatesListInfo {
         val url = "$BASE_URL/latest.json"
-        val result: String = client.request(url) {
+        val result: RatesTypedToken = client.request(url) {
             method = HttpMethod.Get
             parameter("base", currency)
             parameter("app_id", BuildConfig.RATE_API_KEY)
         }
         return try {
-            val resultJson: RatesTypedToken = gson.fromJson(result, ratesTypedValue)
             val arrayList = arrayListOf<ExchangeRate>()
-            for (key in resultJson.rates.keys) {
+            for (key in result.rates.keys) {
                 arrayList.add(
                     ExchangeRate(
                         currency = key,
-                        rate = resultJson.rates[key] ?: 0.0
+                        rate = result.rates[key] ?: 0.0
                     )
                 )
             }
             RatesListInfo(
-                currency = resultJson.base,
+                currency = result.base,
                 exchanges = arrayList
             )
         } catch (ex: Exception) {

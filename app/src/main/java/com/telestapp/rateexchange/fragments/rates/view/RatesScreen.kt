@@ -90,7 +90,6 @@ private fun SelectDialog(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(50.dp)
                             .clickable {
                                 onSelectCurrency.invoke(it)
                             }
@@ -176,14 +175,20 @@ private fun RateView(
 private fun CurrencyRate(currency: String, rate: ExchangeInfo) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "$currency ${stringResource(id = R.string.to)} ${rate.currency} = ${rate.exchangedRate}",
+            text = "$currency ${stringResource(id = R.string.to)} ${rate.currency}",
             color = colorResource(id = R.color.blue),
             fontSize = 20.sp
         )
         Spacer(modifier = Modifier.height(5.dp))
         Text(
+            text = "1 $currency = ${rate.exchangedRate} ${rate.currency}",
+            color = colorResource(id = R.color.black),
+            fontSize = 20.sp
+        )
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(
             text = "${stringResource(id = R.string.rate_exchange)} = ${rate.rate}",
-            fontSize = 16.sp
+            fontSize = 18.sp
         )
         Divider(
             modifier = Modifier

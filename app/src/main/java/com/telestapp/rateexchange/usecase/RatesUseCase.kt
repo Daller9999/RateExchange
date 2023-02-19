@@ -14,24 +14,31 @@ class RatesUseCase(
     private val preference: Preference
 ) {
 
+    companion object {
+        private const val min30 = 30 * 60 * 1000
+    }
     suspend fun getAllCurrencies(): List<CurrencyInfo> {
         var currencies = currencyRepository.getAllCurrencies()
-        if (currencies.isEmpty()) {
+        val currentTime = System.currentTimeMillis()
+        if (currencies.isEmpty() || (currentTime - preference.lastCallCurrency) > min30) {
             currencies = ratesApi.getCurrencyList()
             currencyRepository.clearTable()
             currencies.forEach {
                 currencyRepository.insertCurrency(it)
             }
+            preference.lastCallCurrency = currentTime
         }
         return currencies
     }
 
     suspend fun getCurrencyRatesByName(currency: String): RatesListInfo {
         var rates = ratesRepository.getRateExchangeByName(currency)
-        if (rates.exchanges.isEmpty()) {
+        val currentTime = System.currentTimeMillis()
+        if (rates.exchanges.isEmpty() || (currentTime - preference.lastCallRate) > min30) {
             ratesRepository.clearTable()
             rates = ratesApi.getExchangeRatesList(currency)
             ratesRepository.insertRate(rates)
+            preference.lastCallRate = currentTime
         }
         return rates
     }
