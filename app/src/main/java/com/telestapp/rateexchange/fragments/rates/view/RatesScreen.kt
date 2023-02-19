@@ -1,6 +1,7 @@
 package com.telestapp.rateexchange.fragments.rates.view
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -77,7 +79,9 @@ private fun SelectDialog(
 
     Dialog(onDismissRequest = onDismissDialog) {
         Card(
-            modifier = Modifier.fillMaxSize().padding(vertical = 30.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = 30.dp),
             shape = RoundedCornerShape(size = 10.dp),
             elevation = 10.dp,
             border = BorderStroke(
@@ -86,24 +90,58 @@ private fun SelectDialog(
             )
         ) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
+                item {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        ) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            Box(
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .clickable { onDismissDialog() },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_close),
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                        Divider(
+                            modifier = Modifier.fillMaxWidth(),
+                            color = colorResource(id = R.color.blue)
+                        )
+                    }
+                }
                 items(state.currencies) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
                                 onSelectCurrency.invoke(it)
-                            }
+                            },
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Spacer(modifier = Modifier.height(5.dp))
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(60.dp)
+                                .padding(horizontal = 30.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = it.shortName,
                                 fontSize = 20.sp,
                                 color = colorResource(id = R.color.blue)
                             )
-                            Spacer(modifier = Modifier.weight(1f).defaultMinSize(minWidth = 10.dp))
+                            Spacer(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .defaultMinSize(minWidth = 10.dp)
+                            )
                             Text(
                                 text = it.longName,
                                 fontSize = 16.sp,
@@ -112,7 +150,6 @@ private fun SelectDialog(
                                 overflow = TextOverflow.Ellipsis
                             )
                         }
-                        Spacer(modifier = Modifier.height(5.dp))
                         Divider(
                             modifier = Modifier.fillMaxWidth(),
                             color = colorResource(id = R.color.blue)
@@ -137,6 +174,7 @@ private fun RateView(
     ) {
         Row(modifier = Modifier
             .clickable { onSelectClick.invoke() }
+            .fillMaxWidth()
             .padding(horizontal = 10.dp)
             .height(50.dp),
             verticalAlignment = Alignment.CenterVertically
