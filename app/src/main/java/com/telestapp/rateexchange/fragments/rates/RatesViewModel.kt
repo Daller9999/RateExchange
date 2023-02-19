@@ -11,6 +11,7 @@ import com.telestapp.rateexchange.usecase.RatesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 
 class RatesViewModel(
     private val ratesUseCase: RatesUseCase
@@ -18,6 +19,7 @@ class RatesViewModel(
 
     companion object {
         private const val DEFAULT_CURRENCY = "USD"
+        private const val ROUND_SCALE = 2
     }
 
     private var ratesListInfo = RatesListInfo()
@@ -52,9 +54,7 @@ class RatesViewModel(
 
     private fun onEnterText(text: String) = scopeIO.launch {
         update { it.copy(enterText = text) }
-        text.toDoubleOrNull()?.let {
-            calculateCurrency(it)
-        }
+        calculateCurrency(text.toDoubleOrNull() ?: 0.0)
     }
 
     private fun onStart() = scopeIO.launch {
@@ -82,8 +82,8 @@ class RatesViewModel(
             rate = it.rate
             ExchangeInfo(
                 currency = it.currency,
-                exchangedRate = rate.toString().roundString(),
-                rate = (rate * count).toString().roundString()
+                exchangedRate = rate.roundString(),
+                rate = (rate * count).roundString()
             )
         }
         update { it.copy(rates = arrayList) }
@@ -110,15 +110,34 @@ class RatesViewModel(
         calculateCurrency(1.0)
     }
 
-    private fun String.roundString(): String {
-        val split = split(".")
-        if (split.size == 1) return this
+    private fun Double.roundString(): String {
+        val normal = BigDecimal(this).toPlainString()
+        val split = normal.split(".")
+        if (split.size == 1) return normal.splitSpace()
         val part = split[1]
-        for (i in 1 until part.length) {
+        for (i in part.indices) {
             if (part[i].toString() != "0") {
-                return "${split[0]}.${part.substring(0, if (i + 2 >= part.length) part.length else i + 2)}"
+                return "${split[0].splitSpace()},${
+                    part.substring(
+                        0,
+                        if (i + ROUND_SCALE >= part.length) part.length else i + ROUND_SCALE
+                    )
+                }"
             }
         }
-        return this
+        return normal.splitSpace()
+    }
+
+    private fun String.splitSpace(): String {
+        val string = StringBuilder()
+        var count = 1
+        for (i in length - 1 downTo 0) {
+            string.append(this[i].toString())
+            if (count % 3 == 0 && count > 0 && count <= length - 1) {
+                string.append(".")
+            }
+            count++
+        }
+        return string.toString().reversed()
     }
 }

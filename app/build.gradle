@@ -102,4 +102,11 @@ dependencies {
     // Database Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    // Mockk test
+    testImplementation "io.mockk:mockk:$mockk_version"
+    testImplementation "io.mockk:mockk-android:$mockk_version"
+    testImplementation "io.mockk:mockk-agent:$mockk_version"
+    testImplementation "io.kotlintest:kotlintest-runner-junit5:3.4.0"
+    testImplementation "io.kotlintest:kotlintest-extensions-koin:3.4.0"
 }
