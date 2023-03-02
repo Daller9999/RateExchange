@@ -40,6 +40,13 @@ android {
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        benchmark {
+            minifyEnabled true
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -110,4 +117,6 @@ dependencies {
     testImplementation 'io.insert-koin:koin-test:3.3.2'
     testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+
+    implementation "androidx.profileinstaller:profileinstaller:1.2.2"
 }
