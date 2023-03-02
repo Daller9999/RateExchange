@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ComposeTest</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="selected_currency">Selected currency</string>
+    <string name="to">to</string>
+    <string name="rate_exchange">Rate exchange</string>
+</resources>

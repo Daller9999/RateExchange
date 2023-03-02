@@ -9,9 +9,29 @@
               <option name="preferredColumnWidths">
                 <map>
                   <entry key="192.168.1.62:5555" value="120" />
+                  <entry key="Duration" value="176" />
+                  <entry key="HUAWEI&#10; STK-LX1" value="120" />
+                  <entry key="Pixel_2_API_23" value="120" />
+                  <entry key="Pixel_2_XL_API_28" value="206" />
+                  <entry key="Pixel_XL_API_32" value="120" />
+                  <entry key="S3FNW19B05005097" value="120" />
+                  <entry key="Tests" value="446" />
+                  <entry key="samsung&#10; SM-A725F" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-581550248">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="192.168.1.62:5555" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_2_API_23" value="120" />
-                  <entry key="Pixel_XL_API_32" value="120" />
+                  <entry key="Pixel_2_API_28" value="120" />
+                  <entry key="Pixel_2_XL_API_28" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="samsung&#10; SM-A725F" value="120" />
                 </map>
@@ -26,7 +46,11 @@
                 <map>
                   <entry key="192.168.1.62:5555" value="120" />
                   <entry key="Duration" value="90" />
+                  <entry key="HUAWEI&#10; STK-LX1" value="120" />
+                  <entry key="Pixel_2_API_28" value="120" />
+                  <entry key="Pixel_2_XL_API_28" value="120" />
                   <entry key="Pixel_XL_API_32" value="120" />
+                  <entry key="S3FNW19B05005097" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="samsung&#10; SM-A725F" value="120" />
                 </map>
@@ -41,7 +65,10 @@
                 <map>
                   <entry key="192.168.1.62:5555" value="120" />
                   <entry key="Duration" value="90" />
+                  <entry key="HUAWEI&#10; STK-LX1" value="120" />
+                  <entry key="Pixel_2_XL_API_28" value="120" />
                   <entry key="Pixel_XL_API_32" value="120" />
+                  <entry key="S3FNW19B05005097" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="samsung&#10; SM-A725F" value="120" />
                 </map>
